@@ -422,6 +422,23 @@ public static class TryExtensions
         }
         return r;
     };
+    
+    /// <summary>
+    /// Do some action on exception when fail is occured
+    /// </summary>
+    /// <returns>
+    /// Returns the original unmodified structure
+    /// </returns>
+    public static Try<A> DoIfFail<A>(this Try<A> ma, Action<Exception> f) => () =>
+    {
+        var r = ma.Try();
+        if (r.IsFaulted)
+        {
+            f(r.Exception);
+        }
+        return r;
+    };
+
 
     /// <summary>
     /// Maps the bound value

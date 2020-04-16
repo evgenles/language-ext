@@ -1474,6 +1474,23 @@ public static class TryOptionAsyncExtensions
     });
 
     /// <summary>
+    /// Do some action on exception when fail is occured
+    /// </summary>
+    /// <returns>
+    /// Returns the original unmodified structure
+    /// </returns>
+    public static TryOptionAsync<A> DoIfFail<A>(this TryOptionAsync<A> ma, Action<Exception> f) => async () =>
+    {
+        var r = await ma.Try();
+        if (r.IsFaulted)
+        {
+            f(r.Exception);
+        }
+        return r;
+    };
+
+
+    /// <summary>
     /// Maps the bound value
     /// </summary>
     /// <typeparam name="A">Type of the bound value</typeparam>

@@ -517,6 +517,22 @@ public static class TryOptionExtensions
         }
         return r;
     };
+    
+    /// <summary>
+    /// Do some action on exception when fail is occured
+    /// </summary>
+    /// <returns>
+    /// Returns the original unmodified structure
+    /// </returns>
+    public static TryOption<A> DoIfFail<A>(this TryOption<A> ma, Action<Exception> f) => () =>
+    {
+        var r = ma.Try();
+        if (r.IsFaulted)
+        {
+            f(r.Exception);
+        }
+        return r;
+    };
 
     /// <summary>
     /// Maps the bound value
